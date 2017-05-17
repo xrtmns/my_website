@@ -1,0 +1,101 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Testing Jason</title>
+<style>
+h1 {
+    border-bottom: 3px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+}
+table, th , td  {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 10px;
+}
+table tr:nth-child(odd)	{
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+
+<body>
+<h1>Super Leage with javascript from localhost</h1>
+<div id="id01"></div>
+
+<div ng-app="myApp" ng-controller="customersCtrl">
+ <h1>Super Leage - Play offs with angularJs from server</h1>
+<table>
+<tr><th>Αγ.</th><th>Home</th><th>Away</th><th>Σκορ</th><th>Date</th><th>Time</th></tr>
+  <tr ng-repeat="x in names">
+  	<td>{{ x.Matchday }}η</td>
+    <td>{{ x.Home }}</td>
+    <td>{{ x.Away }}</td>
+    <td>{{ x.Skor }}</td>
+    <td>{{ x.Date }}</td>
+    <td>{{ x.Time }}</td>
+  </tr>
+</table>
+
+<p>Name : <input type="text" ng-model="name" placeholder="Enter name here"></p>
+<h2>Hello {{name}}</h2>
+ 
+</div>
+ <!-- AngularJs-->
+<script>
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+   $http.get("http://www.easy-bet.gr/test_jsn.php")
+   .then(function (response) {$scope.names = response.data;});
+});
+
+
+<!--Javascript-->
+
+var xmlhttp = new XMLHttpRequest();
+var url2 = "http://www.w3schools.com/website/customers_mysql.php";
+var url = "http://localhost/study_site/test_jsn/test_jsn.php";
+xmlhttp.onreadystatechange=function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        myFunction(xmlhttp.responseText);
+    }
+}
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+function myFunction(response) {
+    var arr = JSON.parse(response);
+    var i;
+    var out = "<table>";
+	out+="<tr><th>home</th><th>Away</th><th>Skor</th>"; 
+
+for(i = 0; i < arr.length; i++) {
+        out += "<tr><td>" + 
+        arr[i].Home +
+        "</td><td>" +
+        arr[i].Away +
+        "</td><td>" +
+        arr[i].Skor +
+        "</td></tr>";
+	}
+	out += "</table>";
+	
+    //for(i = 0; i < arr.length; i++) {
+        //out += "<tr><td>" +
+       //arr[i].model +
+       //"</td><td>" +
+       //arr[i].year +
+       //"</td></tr>";
+    //}
+    //out += "</table>";
+    document.getElementById("id01").innerHTML = out;
+}
+</script>
+</body>
+</html>
